@@ -1,14 +1,14 @@
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState } from "react";
+import useAxiosFetch from '../hooks/useAxiosFetch'
 
-const DataContext = createContext({});
+export const DataContext = createContext();
 
 export const DataProvider = ({ children }) => {
-    const { data, fetchError, isLoading } = useAxiosFetch('http://localhost:3500/users');
-    return (
-        <DataContext.Provider value={{
-            fetchError, isLoading, data
-        }}>
-            {children}
-        </DataContext.Provider>
-    )
-}
+  const { data, fetchError, isLoading } = useAxiosFetch('http://localhost:3500/users');
+
+  return (
+    <DataContext.Provider value={{ data, fetchError, isLoading }}>
+      {children}
+    </DataContext.Provider>
+  );
+};
