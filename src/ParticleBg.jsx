@@ -1,21 +1,24 @@
 import { useEffect, useMemo, useState } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
+import React from "react";
 
-const ParticleBg = () => {
+const ParticleBgHome = () => {
   const [init, setInit] = useState(false);
 
+  // Initialize the particles engine only once
   useEffect(() => {
     initParticlesEngine(async (engine) => {
-      await loadSlim(engine);
-    }).then(() => {
-      setInit(true);
+      try {
+        await loadSlim(engine);
+        setInit(true);
+      } catch (err) {
+        console.error("Error loading particles engine:", err);
+      }
     });
   }, []);
 
-  const particlesLoaded = (container) => {
-  };
-
+  // Particle options, memoized to run only once
   const options = useMemo(
     () => ({
       background: {
@@ -83,25 +86,20 @@ const ParticleBg = () => {
         },
       },
       detectRetina: true,
-        fullScreen: {
-            enable: true,
-            zIndex: 0,
-        },
+      fullScreen: {
+        enable: true,
+        zIndex: 0,
+      },
     }),
-    [],
+    [] // Empty dependency array ensures this is only created once
   );
 
+  // Render particles only after initialization
   if (init) {
-    return (
-      <Particles
-        id="tsparticles"
-        particlesLoaded={particlesLoaded}
-        options={options}
-      />
-    );
+    return <Particles id="tsparticles" options={options} />;
   }
 
-  return <></>;
+  return null; // Render nothing until particles are initialized
 };
 
-export default ParticleBg;
+export default React.memo(ParticleBgHome);

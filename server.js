@@ -9,6 +9,7 @@ const restrictAccessToAuth = require('./backend/middleware/restrictAccessToAuth'
 const cors = require('cors');
 const corsOptions = require('./backend/config/corsOptions');
 const cookieParser = require('cookie-parser');
+const authRoutes = require('./backend/routes/auth');
 const PORT = process.env.PORT || 3500;
 
 // Enable CORS
@@ -31,7 +32,10 @@ app.use('/', express.static(path.join(__dirname, '/public')));
 
 // Public routes (no authentication required)
 app.use('/', require('./backend/routes/root'));
+app.use('/auth', authRoutes);
 app.get('/users', usersController.getAllUsers);
+
+app.post('/refresh', require('./backend/controllers/refreshTokenController').handleRefreshToken);
 
 // Apply JWT verification middleware to all routes below this line
 app.use(verifyJWT);
@@ -42,5 +46,7 @@ app.get('/{*splat}', (req, res) => {
 });
 // Error handling middleware
 app.use(errorHandler);
+
+// password for the "user": /* password */
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
