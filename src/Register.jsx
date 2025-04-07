@@ -1,43 +1,49 @@
-import { useState } from "react";
+import { DataContext } from "./context/DataContext";
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import FloatingLabelInput from "./FloatingLabelInput";
 import ParticleBg from "./ParticleBg";
+import axios from "axios";
 
 const Register = () => {
+  const { data, setData } = useContext(DataContext); 
+  const [redirect, setRedirect] = useState('');
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({ username: "", password: "" });
-  const [errors, setErrors] = useState({ username: "", password: "" });
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    setErrors((prev) => ({ ...prev, [name]: "" })); // Clear error on input change
+    setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const newErrors = {};
-    if (!formData.username) {
-      newErrors.username = "This field mustn't be empty";
-    }
-    if (!formData.password) {
-      newErrors.password = "This field mustn't be empty";
-    } else if (formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters long";
-    }
-
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-    } else {
-      // Simulate incorrect input validation
-      if (formData.username !== "testuser" || formData.password !== "testpass") {
-        setErrors({
-          username: "Incorrect username or password",
-          password: "Incorrect username or password",
-        });
-      } else {
-        alert("Registration successful!");
+  
+    try {
+      const checkResponse = await axios.post("http://localhost:3500/auth/check-username", {
+        username: formData.username,
+      });
+  
+      if (checkResponse.data.exists) {
+        setErrors((prev) => ({ ...prev, username: "Username already exists" }));
+        return;
       }
+  
+      const response = await axios.post("http://localhost:3500/register", formData);
+  
+      if (response.status === 201) {
+        setInterval(() => navigate("/auth"), 5000); 
+        setRedirect("Account created successfully! Redirecting to login...");
+      }
+    } catch (error) {
+      console.error("Error during registration:", error);
+      setErrors((prev) => ({
+        ...prev,
+        general: "An error occurred. Please try again later.",
+      }));
     }
   };
 
@@ -47,6 +53,9 @@ const Register = () => {
       <div className="relative z-10 flex justify-center items-center h-screen">
         <div className="bg-white p-10 md:p-16 rounded-lg shadow-lg w-11/12 max-w-md">
           <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">Create an Account</h1>
+          <div className="items-center text-center mb-4">
+            <p className="text-green-500 text-lg">{redirect}</p>
+          </div>
           <form className="flex flex-col space-y-6" onSubmit={handleSubmit}>
             <FloatingLabelInput
               type="text"

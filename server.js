@@ -10,10 +10,11 @@ const cors = require('cors');
 const corsOptions = require('./backend/config/corsOptions');
 const cookieParser = require('cookie-parser');
 const authRoutes = require('./backend/routes/auth');
+const registerRoutes = require('./backend/routes/register');
 const PORT = process.env.PORT || 3500;
 
 // Enable CORS
-app.use(cors(corsOptions));
+app.use(cors());
 
 // custom middleware logger
 app.use(logger);
@@ -33,6 +34,7 @@ app.use('/', express.static(path.join(__dirname, '/public')));
 // Public routes (no authentication required)
 app.use('/', require('./backend/routes/root'));
 app.use('/auth', authRoutes);
+app.use('/register', registerRoutes);
 app.get('/users', usersController.getAllUsers);
 
 app.post('/refresh', require('./backend/controllers/refreshTokenController').handleRefreshToken);
@@ -40,12 +42,13 @@ app.post('/refresh', require('./backend/controllers/refreshTokenController').han
 // Apply JWT verification middleware to all routes below this line
 app.use(verifyJWT);
 
-// Serve React frontend for all other routes
-app.get('/{*splat}', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
-});
 // Error handling middleware
 app.use(errorHandler);
+
+// Serve React frontend for all other routes (move this to the end)
+app.get('*splat', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 // password for the "user": /* password */
 

@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Auth = () => {
-  const { data, setData } = useContext(DataContext); // Destructure both data and setData
+  const { data, setData } = useContext(DataContext);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [error, setError] = useState("");
@@ -32,7 +32,7 @@ const Auth = () => {
       const response = await axios.post("http://localhost:3500/auth", formData);
       const { accessToken, id } = response.data;
 
-      setData({ id, accessToken }); // Use the setter function from context
+      setData({ id, accessToken }); 
       navigate(`/dashboard/${id}`);
     } catch (err) {
       setError("Invalid username or password");

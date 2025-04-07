@@ -38,4 +38,14 @@ const handleRegister = async (req, res) => {
   }
 };
 
-module.exports = { handleRegister };
+// Define the handleNewUser function
+const handleNewUser = (req, res) => {
+    // Logic for handling new user registration
+    res.status(201).send({ message: 'User registered successfully' });
+};
+
+// Export the function
+module.exports = {
+    handleRegister,
+    handleNewUser,
+};

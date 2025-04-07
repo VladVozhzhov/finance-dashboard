@@ -6,7 +6,6 @@ import React from "react";
 const ParticleBgHome = () => {
   const [init, setInit] = useState(false);
 
-  // Initialize the particles engine only once
   useEffect(() => {
     initParticlesEngine(async (engine) => {
       try {
@@ -18,7 +17,6 @@ const ParticleBgHome = () => {
     });
   }, []);
 
-  // Particle options, memoized to run only once
   const options = useMemo(
     () => ({
       background: {
@@ -91,15 +89,14 @@ const ParticleBgHome = () => {
         zIndex: 0,
       },
     }),
-    [] // Empty dependency array ensures this is only created once
+    [] 
   );
 
-  // Render particles only after initialization
   if (init) {
     return <Particles id="tsparticles" options={options} />;
   }
 
-  return null; // Render nothing until particles are initialized
+  return null;
 };
 
 export default React.memo(ParticleBgHome);
