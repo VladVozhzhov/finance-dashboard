@@ -1,51 +1,26 @@
-const bcrypt = require("bcrypt");
-const { v4: uuid } = require("uuid");
-const fsPromises = require("fs").promises;
-const path = require("path");
-
-const usersDB = {
-  users: require("../model/users.json"),
-  setUsers: function (data) {
-    this.users = data;
-  },
-};
+const bcrypt = require('bcrypt');
+const User = require('../model/User');
 
 const handleRegister = async (req, res) => {
   const { username, password } = req.body;
-  if (!username || !password)
-    return res.status(400).json({ message: "Username and password are required." });
+  if (!username || !password) return res.status(400).json({ message: 'Username and password are required.' });
 
-  const duplicate = usersDB.users.find((user) => user.username === username);
+  const duplicate = await User.findOne({ username: username }).exec();
   if (duplicate) return res.sendStatus(409); // Conflict
 
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = {
-        id: uuid(),
-        username,
-        password: hashedPassword,
-    };
-
-    usersDB.setUsers([...usersDB.users, newUser]);
-    await fsPromises.writeFile(
-        path.join(__dirname, "..", "model", "users.json"),
-        JSON.stringify(usersDB.users, null, 2) // Pretty-print JSON
-    );
-
+    const result = await User.create({
+      username,
+      password: hashedPassword
+    });
     res.status(201).json({ message: `User ${username} created successfully.` });
   } catch (err) {
-      res.status(500).json({ message: "Error writing to JSON file" });
+      res.status(500).json({ message: `Error creating new user: ${err}`  });
   }
-};
-
-// Define the handleNewUser function
-const handleNewUser = (req, res) => {
-    // Logic for handling new user registration
-    res.status(201).send({ message: 'User registered successfully' });
 };
 
 // Export the function
 module.exports = {
     handleRegister,
-    handleNewUser,
 };

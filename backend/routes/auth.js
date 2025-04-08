@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
-const { checkUsername } = require('../controllers/checkUsernameController');
 const rateLimit = require('express-rate-limit');
 
 const loginLimiter = rateLimit({
@@ -11,7 +10,5 @@ const loginLimiter = rateLimit({
 });
 
 router.post('/', loginLimiter, authController.handleLogin);
-
-router.post('/check-username', checkUsername);
 
 module.exports = router;
