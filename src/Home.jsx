@@ -12,11 +12,11 @@ const Home = () => {
           Stay on top of your financial goals with real-time insights and powerful tools.
         </p>
         <button className="link-button">
-          <Link to="Register">Sign Up</Link>
+          <Link to="register">Sign Up</Link>
         </button>
         <p className="md:text-lg text-sm inline mx-3">Or</p>
         <button className="link-button">
-          <Link to="Auth">Log In</Link>
+          <Link to="auth">Log In</Link>
         </button>
       </div>
     </div>

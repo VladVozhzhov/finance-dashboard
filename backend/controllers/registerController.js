@@ -16,11 +16,10 @@ const handleRegister = async (req, res) => {
     });
     res.status(201).json({ message: `User ${username} created successfully.` });
   } catch (err) {
-      res.status(500).json({ message: `Error creating new user: ${err}`  });
+    res.status(500).json({ message: `Error creating new user: ${err}` });
   }
 };
 
-// Export the function
 module.exports = {
     handleRegister,
 };

@@ -9,63 +9,55 @@ const errorHandler = require('./backend/middleware/errorHandler');
 const verifyJWT = require('./backend/middleware/verifyJWT');
 const cookieParser = require('cookie-parser');
 const credentials = require('./backend/middleware/credentials');
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 const connectDB = require('./backend/config/dbConn');
+
 const PORT = process.env.PORT || 3500;
 
 // Connect to MongoDB
 connectDB();
+mongoose.connection.on('error', err => console.error('MongoDB connection error:', err));
 
-// Log MongoDB connection errors
-mongoose.connection.on('error', (err) => {
-    console.error('MongoDB connection error:', err);
-});
-
-// custom middleware logger
+// Logger Middleware
 app.use(logger);
 
-// Handle options credentials
+// Handle credentials before CORS
 app.use(credentials);
 
-// Cross Origin Resource Sharing
+// CORS
 app.use(cors(corsOptions));
 
-
-// built-in middleware to handle urlencoded data
+// Parse incoming data
 app.use(express.urlencoded({ extended: false }));
-
-// built-in middleware for json 
 app.use(express.json());
-
-// middleware for cookies
 app.use(cookieParser());
 
 // Serve static files
 app.use('/', express.static(path.join(__dirname, '/public')));
 
-// Public routes (no authentication required)
+// Public Routes (No JWT Required)
 app.use('/', require('./backend/routes/root'));
 app.use('/register', require('./backend/routes/register'));
 app.use('/auth', require('./backend/routes/auth'));
 app.use('/refresh', require('./backend/routes/refresh'));
 app.use('/logout', require('./backend/routes/logout'));
+app.use('/data', require('./backend/routes/data'));
 
-app.post('/refresh', require('./backend/controllers/refreshTokenController').handleRefreshToken);
-
-// Apply JWT verification middleware to all routes below this line
+// Protected Routes (JWT Required)
 app.use(verifyJWT);
+app.use('/users', require('./backend/routes/userWidgets')); //  GET/POST /users/:id/widgets
+app.use('/widgets', require('./backend/routes/widgets'));   //  PUT/DELETE /widgets/:id
 
-// Error handling middleware
-app.use(errorHandler);
-
-// Serve React frontend for all other routes (move this to the end)
-app.get('*splat', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+app.use((req, res, next) => {
+  console.log(`❓ Unmatched route: ${req.method} ${req.originalUrl}`);
+  next();
 });
 
+// Error handler
 app.use(errorHandler);
 
+// Start server after DB connection established
 mongoose.connection.once('open', () => {
-    console.log('Connected to MongoDB');
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-})
+  console.log('Connected to MongoDB');
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+});

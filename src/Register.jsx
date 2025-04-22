@@ -7,7 +7,6 @@ import ParticleBg from "./ParticleBg";
 import axios from "axios";
 
 const Register = () => {
-  const { data, setData } = useContext(DataContext); 
   const [redirect, setRedirect] = useState('');
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ username: "", password: "" });

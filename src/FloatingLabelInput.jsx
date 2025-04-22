@@ -6,8 +6,8 @@ const FloatingLabelInput = ({ type, placeholder, value, onChange, error, name })
   return (
     <div className="relative w-full">
       <label
-        className={`text-gray-500 transition-all duration-200 absolute ${
-          isFocused || value ? "text-sm left-[5px] top-0.5 bg-white px-1" : "left-3 top-4"
+        className={`text-gray-500 transition-all duration-200 absolute select-none ${
+          isFocused || value ? "text-sm left-[5px] top-0.5 bg-white px-1 select-none" : "left-3 top-4 select-none" 
         }`}
       >
         {placeholder}

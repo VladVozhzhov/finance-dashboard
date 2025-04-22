@@ -7,8 +7,18 @@ const connectDB = async () => {
             throw new Error('DATABASE_URI is not defined in the environment variables.');
         }
         await mongoose.connect(uri);
+        console.log('MongoDB connected successfully.');
     } catch (err) {
         console.error('MongoDB connection error:', err);
+
+        if (err.name === 'MongooseServerSelectionError') {
+            console.error('Ensure your IP address is whitelisted in your MongoDB Atlas cluster.');
+        } else if (err.name === 'MongoNetworkError') {
+            console.error('Check your network connection and SSL/TLS settings.');
+        }
+    
+        console.error('Connection URI:', process.env.DATABASE_URI);
+        console.error('Environment:', process.env.NODE_ENV || 'development');
     }
 };
 

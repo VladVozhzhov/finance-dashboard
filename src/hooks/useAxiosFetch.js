@@ -1,46 +1,40 @@
-import { useState, useEffect } from 'react';
+
 import axios from 'axios';
+import { useState, useEffect } from 'react';
 
-const useAxiosFetch = (dataUrl) => {
-    const [data, setData] = useState([]);
-    const [fetchError, setFetchError] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
-
+const useAxiosFetch = (url) => {
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+  
     useEffect(() => {
-        let isMounted = true;
         const source = axios.CancelToken.source();
 
-        const fetchData = async (url) => {
-            setIsLoading(true);
+        const fetchData = async () => {
             try {
-                const response = await axios.get(url, {
-                    cancelToken: source.token
-                });
-                if (isMounted) {
-                    setData(response.data);
-                    setFetchError(null);
-                }
+                const response = await axios.get(url, { cancelToken: source.token });
+                setData(response.data);
             } catch (err) {
-                if (isMounted) {
-                    setFetchError(err.message);
-                    setData([]);
+                if (axios.isCancel(err)) {
+                    console.log('Request canceled', err.message);
+                } else {
+                    setError(err);
                 }
             } finally {
-                isMounted && setIsLoading(false);
+                setLoading(false);
             }
-        }
-
-        fetchData(dataUrl);
-
-        const cleanUp = () => {
-            isMounted = false;
-            source.cancel();
-        }
-
-        return cleanUp;
-    }, [dataUrl]);
-
-    return { data, fetchError, isLoading };
-}
+        };
+        console.log('Fetching:', url);
+      
+        fetchData();
+      
+        // Cleanup function to cancel the request on unmount
+        return () => {
+            source.cancel('Operation canceled by the user.');
+        };
+    }, [url]);
+  
+    return { data, loading, error };
+};
 
 export default useAxiosFetch;

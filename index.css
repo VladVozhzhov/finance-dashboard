@@ -7,3 +7,7 @@
 .particlebg-container {
     @apply m-0 p-0 h-screen w-screen overflow-hidden flex flex-col items-center justify-center text-center;
 }
+
+.a-nav {
+    @apply bg-blue-500 hover:bg-blue-600 py-2 px-3 rounded text-white text-sm cursor-pointer transition duration-300 ease-in-out;
+}

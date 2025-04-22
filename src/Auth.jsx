@@ -1,3 +1,4 @@
+import { AuthContext } from "./context/AuthContext";
 import { DataContext } from "./context/DataContext";
 import ParticleBg from "./ParticleBg";
 import FloatingLabelInput from "./FloatingLabelInput";
@@ -7,6 +8,7 @@ import axios from "axios";
 
 const Auth = () => {
   const { data, setData } = useContext(DataContext);
+  const { setAuth } = useContext(AuthContext); 
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [error, setError] = useState("");
@@ -15,28 +17,42 @@ const Auth = () => {
     e.preventDefault();
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    setError(""); 
+    setError("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     const { username, password } = formData;
-
+  
     if (!username || !password) {
       setError("Username and password are required.");
       return;
     }
-
+  
     try {
-      const response = await axios.post("http://localhost:3500/auth", formData);
-      const { accessToken, id } = response.data;
+      const response = await axios.post("http://localhost:3500/auth", formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      
+      console.log("API Response Data:", response.data);
+      
+      const { accessToken, userId } = response.data;
+      
+      // Validate
+      if (!accessToken || !userId) {
+        console.error("Missing token info in response:", response.data);
+        throw new Error("Authentication data not returned from the server.");
+      }
 
-      setData({ id, accessToken }); 
-      navigate(`/dashboard/${id}`);
+      setAuth({ accessToken, userId });
+
+  
+      navigate(`/dashboard/${userId}`);
     } catch (err) {
       setError("Invalid username or password");
-      console.error(err);
     }
   };
 
@@ -48,7 +64,7 @@ const Auth = () => {
           <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">Log In</h1>
           <form 
             className="flex flex-col space-y-6" 
-            onSubmit={(e) => handleSubmit(e)}              
+            onSubmit={handleSubmit}
           >
             <FloatingLabelInput
               type="text"
@@ -73,7 +89,7 @@ const Auth = () => {
             </button>
           </form>
           <p className="text-center text-gray-600 mt-4">
-            Don`t have an account?{" "}
+            Don’t have an account?{" "}
             <Link to="/register" className="text-blue-500 hover:underline">
               Create an account
             </Link>

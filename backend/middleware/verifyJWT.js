@@ -1,13 +1,22 @@
-const jwt = require("jsonwebtoken");
+const jwt = require('jsonwebtoken');
 
 const verifyJWT = (req, res, next) => {
   const authHeader = req.headers.authorization || req.headers.Authorization;
-  if (!authHeader?.startsWith("Bearer ")) return res.sendStatus(401); // Unauthorized
+  if (!authHeader?.startsWith('Bearer ')) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+  const token = authHeader?.split(' ')[1] || req.cookies.jwt;
+  if (!token) return res.sendStatus(401);
 
-  const token = authHeader.split(" ")[1];
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
-    if (err) return res.sendStatus(403); // Forbidden
-    req.user = decoded.username;
+    if (err) {
+      console.log('JWT error:', err);
+      return res.status(403).json({ message: 'Forbidden: Token verification failed' });
+    }
+    req.user = {
+      _id: decoded.UserInfo.id,
+      username: decoded.UserInfo.username,
+    };
     next();
   });
 };
