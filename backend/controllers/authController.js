@@ -17,7 +17,6 @@ const handleLogin = async (req, res) => {
   const match = await bcrypt.compare(password, foundUser.password);
   if (!match) return res.sendStatus(401);
 
-  // Access & Refresh token payload
   const accessToken = jwt.sign(
     {
       UserInfo: {
@@ -26,28 +25,36 @@ const handleLogin = async (req, res) => {
       }
     },
     process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: '15m' } // change to 30s if you're testing quick expiry
+    { expiresIn: '15m' }
   );
 
   const refreshToken = jwt.sign(
-    { username: foundUser.username },
+    {
+      username: foundUser.username,
+      id: foundUser._id
+    },
     process.env.REFRESH_TOKEN_SECRET,
     { expiresIn: '7d' }
   );
 
-  // Save refresh token in DB
-  foundUser.refreshToken = refreshToken;
-  const result = await foundUser.save();
+  res.clearCookie('jwt', {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? 'None' : 'Lax'
+  });
 
-  // Set refresh token as HttpOnly cookie
+  // Save new refresh token in DB
+  foundUser.refreshToken = refreshToken;
+  await foundUser.save();
+
+  // Set new refresh token as cookie
   res.cookie('jwt', refreshToken, {
     httpOnly: true,
     secure: isProduction,
     sameSite: isProduction ? 'None' : 'Lax',
-    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
   });
 
-  // Send access token in response
   res.json({ accessToken, userId: foundUser._id });
 };
 

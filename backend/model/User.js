@@ -33,7 +33,14 @@ const userSchema = new Schema({
       of: Number,
       default: {}
     }
-  }
+  },
+  progressBars: [
+    {
+      name: String,
+      saved: Number,
+      goal: Number
+    },
+  ]
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema);

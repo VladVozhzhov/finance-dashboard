@@ -47,7 +47,7 @@ const updateWidget = async (req, res) => {
 const deleteWidgetOfType = async (req, res) => {
   const authUserId = req.user._id;
   const { id: userId, type } = req.params;
-  const { date } = req.body;           // your client is sending { date: 'April 22 2025' }
+  const { date } = req.body;
 
   if (authUserId.toString() !== userId) {
     return res.status(403).json({ message: 'Forbidden: Not your data.' });
@@ -100,9 +100,6 @@ const createWidgetOfType = async (req, res) => {
   const { id: userId, type } = req.params;
   const { data } = req.body;
 
-  console.log('🔐 Auth User:', authUserId);
-  console.log('🧍 URL Param User:', userId);
-
   if (String(authUserId) !== String(userId)) {
     return res.status(403).json({ message: 'Forbidden: Not your data.' });
   }
@@ -111,22 +108,17 @@ const createWidgetOfType = async (req, res) => {
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ message: 'User not found' });
 
-    // Ensure the widget type exists, if not, initialize it as an empty Map
     if (!user.widgets[type]) {
       user.widgets[type] = new Map();
     }
 
-    // Update the widget using the Map's set method
     Object.entries(data).forEach(([key, value]) => {
       user.widgets[type].set(key, value);
     });
-
-    // Save the updated user document
     await user.save();
 
     res.status(201).json({ message: `Widget '${type}' updated`, widgets: user.widgets });
   } catch (err) {
-    console.error('🔥 Widget creation error:', err);
     res.status(500).json({ message: err.message });
   }
 };

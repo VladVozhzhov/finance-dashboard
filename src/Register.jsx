@@ -2,8 +2,8 @@ import { DataContext } from "./context/DataContext";
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import FloatingLabelInput from "./FloatingLabelInput";
-import ParticleBg from "./ParticleBg";
+import FloatingLabelInput from "./components/FloatingLabelInput";
+import ParticleBg from "./components/ParticleBg";
 import axios from "axios";
 
 const Register = () => {
@@ -63,6 +63,12 @@ const Register = () => {
               value={formData.username}
               onChange={handleChange}
               error={errors.username}
+              style="text-gray-500 transition-all duration-200 absolute pointer-events-none bg-none"
+              focusStyle="text-sm left-[5px] top-0.5 bg-white px-1"
+              noFocusStyle="left-3 top-4"
+              inputStyle="border p-4 text-lg rounded-lg w-full focus:outline-none focus:ring-2"
+              errorStyle="border-red-500 focus:ring-red-500"
+              noErrorStyle="border-gray-300 focus:ring-blue-500"
             />
             <FloatingLabelInput
               type="password"
@@ -71,6 +77,12 @@ const Register = () => {
               value={formData.password}
               onChange={handleChange}
               error={errors.password}
+              style="text-gray-500 transition-all duration-200 absolute pointer-events-none bg-none"
+              focusStyle="text-sm left-[5px] top-0.5 bg-white px-1"
+              noFocusStyle="left-3 top-4"
+              inputStyle="border p-4 text-lg rounded-lg w-full focus:outline-none focus:ring-2"
+              errorStyle="border-red-500 focus:ring-red-500"
+              noErrorStyle="border-gray-300 focus:ring-blue-500"
             />
             <button
               type="submit"

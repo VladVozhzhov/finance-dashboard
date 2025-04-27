@@ -45,8 +45,10 @@ app.use('/data', require('./backend/routes/data'));
 
 // Protected Routes (JWT Required)
 app.use(verifyJWT);
-app.use('/users', require('./backend/routes/userWidgets')); //  GET/POST /users/:id/widgets
-app.use('/widgets', require('./backend/routes/widgets'));   //  PUT/DELETE /widgets/:id
+app.use('/users', require('./backend/routes/userWidgets'));
+app.use('/users', require('./backend/routes/progressBars'));
+app.use('/widgets', require('./backend/routes/widgets'));
+app.use('/progressBars', require('./backend/routes/progressBarsAll'));
 
 app.use((req, res, next) => {
   console.log(`❓ Unmatched route: ${req.method} ${req.originalUrl}`);

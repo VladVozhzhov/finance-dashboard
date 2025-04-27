@@ -1,7 +1,7 @@
 import { AuthContext } from "./context/AuthContext";
 import { DataContext } from "./context/DataContext";
-import ParticleBg from "./ParticleBg";
-import FloatingLabelInput from "./FloatingLabelInput";
+import ParticleBg from "./components/ParticleBg";
+import FloatingLabelInput from "./components/FloatingLabelInput";
 import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -14,7 +14,6 @@ const Auth = () => {
   const [error, setError] = useState("");
 
   const handleChange = (e) => {
-    e.preventDefault();
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     setError("");
@@ -72,6 +71,12 @@ const Auth = () => {
               name="username"
               value={formData.username}
               onChange={handleChange}
+              style="text-gray-500 transition-all duration-200 absolute pointer-events-none bg-none"
+              focusStyle="text-sm left-[5px] top-0.5 bg-white px-1"
+              noFocusStyle="left-3 top-4"
+              inputStyle="border p-4 text-lg rounded-lg w-full focus:outline-none focus:ring-2"
+              errorStyle="border-red-500 focus:ring-red-500"
+              noErrorStyle="border-gray-300 focus:ring-blue-500"
             />
             <FloatingLabelInput
               type="password"
@@ -79,6 +84,12 @@ const Auth = () => {
               name="password"
               value={formData.password}
               onChange={handleChange}
+              style="text-gray-500 transition-all duration-200 absolute pointer-events-none bg-none"
+              focusStyle="text-sm left-[5px] top-0.5 bg-white px-1"
+              noFocusStyle="left-3 top-4"
+              inputStyle="border p-4 text-lg rounded-lg w-full focus:outline-none focus:ring-2"
+              errorStyle="border-red-500 focus:ring-red-500"
+              noErrorStyle="border-gray-300 focus:ring-blue-500"
             />
             {error && <p className="text-red-500 text-sm">{error}</p>}
             <button

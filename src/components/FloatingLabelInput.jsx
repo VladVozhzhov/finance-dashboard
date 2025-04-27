@@ -1,13 +1,13 @@
 import { useState } from "react";
 
-const FloatingLabelInput = ({ type, placeholder, value, onChange, error, name }) => {
+const FloatingLabelInput = ({ type, placeholder, value, onChange, error, name, style, focusStyle, noFocusStyle, inputStyle, errorStyle, noErrorStyle }) => {
   const [isFocused, setIsFocused] = useState(false);
 
   return (
     <div className="relative w-full">
       <label
-        className={`text-gray-500 transition-all duration-200 absolute select-none ${
-          isFocused || value ? "text-sm left-[5px] top-0.5 bg-white px-1 select-none" : "left-3 top-4 select-none" 
+        className={`${style} ${
+          isFocused || value ? `${focusStyle}` : `${noFocusStyle}` 
         }`}
       >
         {placeholder}
@@ -17,8 +17,8 @@ const FloatingLabelInput = ({ type, placeholder, value, onChange, error, name })
         name={name}
         value={value}
         onChange={onChange}
-        className={`border p-4 text-lg rounded-lg w-full focus:outline-none focus:ring-2 ${
-          error ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-blue-500"
+        className={`${inputStyle} ${
+          error ? `${errorStyle}` : `${noErrorStyle}`
         }`}
         onFocus={() => setIsFocused(true)}
         onBlur={(e) => setIsFocused(e.target.value !== "")}

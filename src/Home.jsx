@@ -1,4 +1,4 @@
-import ParticleBg from "./ParticleBg";
+import ParticleBg from "./components/ParticleBg";
 import { Link } from "react-router-dom";
 
 const Home = () => {
