@@ -2,16 +2,21 @@ const User = require('../model/User');
 
 // GET all progress bars for the authenticated user
 const getAllProgressBars = async (req, res) => {
-    const id = req.user._id;
-    try {
-        const user = await User.findById(id);
+    const userId = req.user?._id;;
+    
+      if (!userId) {
+        return res.status(403).json({ message: 'Forbidden: Missing user ID from token.' });
+      }
+    
+      try {
+        const user = await User.findById(userId).lean();
         if (!user) return res.status(404).json({ message: 'User not found' });
-
-        res.json(user.progressBars);
-    } catch (err) {
-        console.error(err);
+    
+        res.json(user.progressBars || []);
+      } catch (err) {
+        console.error('Error fetching progress bar:', err);
         res.status(500).json({ message: err.message });
-    }
+      }
 };
 
 // POST create a new progress bar

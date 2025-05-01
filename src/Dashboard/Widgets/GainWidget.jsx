@@ -31,7 +31,7 @@ const GainWidget = () => {
             inputStyle="flex justify-end focus:border-blue-500 focus:outline-none focus:ring-0 border border-gray-300 rounded-md p-2 py-3 text-sm w-full dark:bg-[#1b1b1b] dark:text-[#d0d0d0]" 
           />
         </div>
-        <button type="submit" className="bg-blue-500 dark:bg-[#262662] text-white text-sm py-1 px-3 rounded-md hover:bg-blue-600 hover:dark:bg-[#262650] mt-2">
+        <button type="submit" className="bg-green-600 dark:bg-green-800 hover:bg-green-700 hover:dark:bg-green-900 text-white text-sm py-1 px-3 rounded-md mt-2">
           Submit
         </button>
       </form>

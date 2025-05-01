@@ -9,7 +9,14 @@ const Dashboard = () => {
         <NavBar />
         <WidgetList />
         <Goal />
-        <Chart data={[50, 30, 20]} />
+        <Chart
+          total={2000}
+          data={[
+            { name: "Food", value: 300, bgColor: "#00C49F", textColor: "#ffffff" },
+            { name: "Rent", value: 1200, bgColor: "#FFBB28", textColor: "#000000" },
+            { name: "Entertainment", value: 250, bgColor: "#FF8042", textColor: "#ffffff" },
+          ]}
+        />
       </div>
   );
 };

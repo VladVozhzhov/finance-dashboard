@@ -45,8 +45,9 @@ app.use('/data', require('./backend/routes/data'));
 
 // Protected Routes (JWT Required)
 app.use(verifyJWT);
+app.use('/users/chart', require('./backend/routes/chart'));
 app.use('/users', require('./backend/routes/userWidgets'));
-app.use('/users', require('./backend/routes/progressBars'));
+app.use('/users/progressBars', require('./backend/routes/progressBars'));
 app.use('/widgets', require('./backend/routes/widgets'));
 app.use('/progressBars', require('./backend/routes/progressBarsAll'));
 

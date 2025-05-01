@@ -6,16 +6,20 @@ import { DataContext } from "../../context/DataContext";
 
 const LoadingTransfer = () => {
   const { auth } = useContext(AuthContext);
-  const { fetchBars, fetchData } = useContext(DataContext);
+  const { fetchBars, fetchData, fetchChart } = useContext(DataContext);
 
   const [initialLoading, setInitialLoading] = useState(true);
 
   useEffect(() => {
     const loadData = async () => {
       try {
+        setInitialLoading(true);
         if (auth?.accessToken && auth?.userId) {
-          await fetchBars();
+          console.log(auth);
+          await setInitialLoading(true);
           await fetchData();
+          await fetchBars();
+          await fetchChart();
         }
       } catch (err) {
         console.error("Failed to load dashboard data:", err);
