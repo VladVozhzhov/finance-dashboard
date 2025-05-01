@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const BASE_URL = "http://localhost:3500";
 
@@ -12,6 +13,7 @@ const axiosPrivate = axios.create({
 
 const useAxiosPrivate = () => {
   const { auth, setAuth, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const requestIntercept = axiosPrivate.interceptors.request.use(
@@ -33,7 +35,7 @@ const useAxiosPrivate = () => {
           prevRequest._retry = true;
 
           try {
-            const refreshResponse = await axios.get(`${BASE_URL}/refresh`, {
+            const refreshResponse = await axios.post(`${BASE_URL}/refresh`, {}, {
               withCredentials: true,
             });
 
@@ -50,6 +52,7 @@ const useAxiosPrivate = () => {
           } catch (refreshError) {
             console.warn("Refresh failed. Logging out:", refreshError);
             logout();
+            navigate('/')
             return Promise.reject(refreshError);
           }
         }

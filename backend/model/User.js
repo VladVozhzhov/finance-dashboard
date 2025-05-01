@@ -11,7 +11,10 @@ const chartItemSchema = new Schema({
 const userSchema = new Schema({
   username: { type: String, required: true },
   password: { type: String, required: true },
-  refreshToken: String,
+  refreshToken: {
+    type: String,
+    required: false
+  },
   accessToken: String,
   widgets: {
     budget: { type: Map, of: Number, default: {} },
