@@ -10,50 +10,37 @@ export const DataProvider = ({ children }) => {
   const [bars, setBars] = useState({});
   const [chart, setChart] = useState([]);      
   const [total, setTotal] = useState(0);  
-  const [isLoading, setIsLoading] = useState(true);
   const [fetchError, setFetchError] = useState(null);
   const axiosPrivate = useAxiosPrivate();
 
   const fetchData = async () => {
     if (!auth?.accessToken) return;
     try {
-      setIsLoading(true);
-      setFetchError(null);
       const response = await axiosPrivate.get('/widgets');
       setData(response.data);
     } catch (err) {
       setFetchError(err.message);
-    } finally {
-      setIsLoading(false);
     }
   };
 
   const fetchBars = async () => {
     if (!auth?.accessToken) return;
     try {
-      setIsLoading(true);
-      setFetchError(null);
       const response = await axiosPrivate.get('/progressBars');
       setBars(response.data);
     } catch (err) {
       setFetchError(err.message);
-    } finally {
-      setIsLoading(false);
     }
   };
 
   const fetchChart = async () => {
     if (!auth?.accessToken) return;
     try {
-      setIsLoading(true);
-      setFetchError(null);
       const response = await axiosPrivate.get('/users/chart');
       setChart(response.data.chart.items);
       setTotal(response.data.chart.total);
     } catch (err) {
       setFetchError(err.message);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -62,7 +49,6 @@ export const DataProvider = ({ children }) => {
       data,
       bars,
       setBars,
-      isLoading,
       fetchError,
       refetchData: fetchData,
       fetchData,

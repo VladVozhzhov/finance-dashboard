@@ -15,7 +15,7 @@ const LoadingTransfer = () => {
       try {
         setInitialLoading(true);
         if (auth?.accessToken && auth?.userId) {
-          await setInitialLoading(true);
+          await new Promise(resolve => setTimeout(resolve, 0));
           await fetchData();
           await fetchBars();
           await fetchChart();

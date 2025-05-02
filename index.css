@@ -9,5 +9,95 @@
 }
 
 .a-nav {
-    @apply bg-blue-500 dark:bg-[#262662] hover:bg-blue-600 hover:dark:bg-[#262650] py-2 px-3 rounded text-white text-sm cursor-pointer transition duration-300 ease-in-out;
+    @apply bg-blue-500 dark:bg-[#262662] hover:bg-blue-600 hover:dark:bg-[#262650] py-2 px-3 rounded text-white text-sm cursor-pointer transition duration-300 ease-in-out md:text-lg md:py-3 md:px-7;
+}
+
+.widget-section {
+    @apply overflow-hidden sm:rounded-lg h-full flex flex-col justify-start items-center
+}
+
+.widget-h2 {
+    @apply self-center font-bold mb-2 dark:text-[#d0d0d0] lg:text-2xl;
+}
+
+.widget-form {
+    @apply w-full flex flex-col items-center mb-2
+}
+
+.widget-input-container {
+    @apply flex flex-col justify-center items-center w-full px-4;
+}
+  
+.widget-submit-button {
+    @apply bg-green-600 dark:bg-green-800 hover:bg-green-700 hover:dark:bg-green-900 text-white text-sm md:text-lg py-2 md:py-3 px-4 md:px-6 rounded-md mt-2 transition duration-100;
+}
+
+.widget-style-input {
+    @apply pointer-events-none absolute text-sm text-gray-500 dark:text-gray-400 md:text-lg transition-all;
+}
+
+.widget-input {
+    @apply flex justify-end focus:border-blue-500 focus:outline-none focus:ring-0 border border-gray-300 rounded-md p-2 py-3 md:py-5 text-sm w-full dark:bg-[#1b1b1b] dark:text-[#d0d0d0];
+}
+
+.widget-focus-input {
+    @apply top-1 left-2 text-xs md:text-sm text-blue-500 dark:text-blue-400;
+}
+
+.widget-nofocus-input {
+    @apply top-3 left-2;
+}
+
+.widget-ul {
+    @apply w-full bg-[#ececec] dark:bg-[#2a2a2a] dark:text-[#d0d0d0] rounded-lg py-1 px-2 flex flex-col gap-2 items-start overflow-y-auto max-h-64;
+}
+
+.widget-ul-li {
+    @apply flex items-center justify-between w-full max-w-sm bg-[#e1e1e1] dark:bg-[#212427] rounded-lg p-0.5;
+}
+
+.widget-ul-li-p {
+    @apply text-sm md:text-lg dark:text-[#d0d0d0];
+}
+
+.widget-ul-li-trash {
+    @apply text-red-600 cursor-pointer hover:text-red-800 transition duration-100;
+}
+
+.goal-form {
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr;
+    gap: 1rem;
+}
+
+.goal-input-style {
+    @apply pointer-events-none absolute left-3 text-gray-500 dark:text-gray-400 text-sm md:text-lg transition-all;
+}
+
+.goal-focus-style {
+    @apply top-1 text-xs md:text-sm text-blue-500 dark:text-blue-400;
+}
+
+.goal-nofocus-style {
+    @apply top-4;
+}
+
+.goal-input {
+    @apply flex justify-end focus:border-blue-500 focus:outline-none focus:ring-0 border border-gray-300 rounded-md p-2 py-3 md:py-5 text-sm w-full dark:bg-[#1b1b1b] dark:text-[#d0d0d0];
+}
+
+.chart-input-style {
+    @apply pointer-events-none absolute top-0 text-gray-400 text-sm md:text-lg transition-all duration-300;
+}
+
+.chart-focus-style {
+    @apply text-xs md:text-[1rem] top-0 left-0 px-1 text-blue-500 dark:text-blue-400;
+}
+
+.chart-nofocus-style {
+    @apply top-3 left-2;
+}
+
+.chart-input {
+    @apply flex justify-end focus:border-blue-500 focus:outline-none focus:ring-0 border border-gray-300 rounded-md py-3 md:py-4.5 text-sm md:text-lg pl-1 w-full dark:bg-[#1b1b1b] dark:text-[#d0d0d0];
 }

@@ -29,7 +29,7 @@ const LogoutButton = () => {
     <>
       <button
         onClick={openPopup}
-        className="bg-red-500 dark:bg-red-800 text-white text-sm py-2 px-3 rounded hover:bg-red-600 hover:dark:bg-red-900 cursor-pointer transition duration-300 ease-in-out"
+        className="bg-red-500 dark:bg-red-800 text-white text-sm py-2 px-3 rounded hover:bg-red-600 hover:dark:bg-red-900 cursor-pointer transition duration-300 ease-in-out  md:text-lg md:py-3 md:px-7"
       >
         Logout
       </button>

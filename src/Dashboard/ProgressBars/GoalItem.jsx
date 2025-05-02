@@ -32,7 +32,6 @@ const GoalItem = ({ bar }) => {
             console.error('Error adding money:', err);
         } finally {
             setAddAmount('');
-            refetchBars();
         }
     };
 
@@ -49,7 +48,6 @@ const GoalItem = ({ bar }) => {
             console.error('Error removing money:', err);
         } finally {
             setRemoveAmount('');
-            refetchBars();
         }
     };
 
@@ -82,50 +80,51 @@ const GoalItem = ({ bar }) => {
     };
 
     return (
-        <li className="w-full mb-4 relative group transition duration-300 hover:scale-[1.01] bg-[#e1e1e1] dark:bg-[#212427] rounded-lg shadow-md overflow-hidden">
+        <li className="w-full mb-4 relative group transition duration-300 bg-[#e1e1e1] dark:bg-[#212427] rounded-lg shadow-md overflow-hidden">
             <div className="opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+
             <div className="p-3 rounded-lg shadow-md transition-all duration-300 hover:shadow-lg">
                 <div className="flex flex-row w-full justify-between">
-                  <h3 className="text-lg font-semibold dark:text-[#d0d0d0]">{name}</h3>
-                  <FaTrashAlt className="text-red-600 cursor-pointer text-2xl hover:text-red-800" role="button" onClick={handleWarning} />
+                  <h3 className="text-lg md:text-[1.75rem] font-semibold dark:text-[#d0d0d0]">{name}</h3>
+                  <FaTrashAlt className="text-red-600 cursor-pointer text-2xl md:text-4xl hover:text-red-800 transition duration-100" role="button" onClick={handleWarning} />
                 </div>
                 {warning && <p className='bg-red-500 text-white p-1 rounded-lg text-lg font-bold'>{warning}</p>}
-                <label className="text-md font-medium mb-2 flex flex-row dark:text-[#d0d0d0]">{`Progress: ${progressValue}%`}{reachedGoal === true && <p className='text-md text-center mx-2'>Goal reached 🎉🎉🎉</p>}</label>
+                <label className="text-md text-xl font-medium mb-2 flex flex-row dark:text-[#d0d0d0]">{`Progress: ${progressValue}%`}{reachedGoal === true && <p className='text-md text-xl ml-12 text-center mx-2'>Goal reached 🎉🎉🎉</p>}</label>
 
-                <div className="relative w-full h-6 rounded-lg overflow-hidden mt-1 mb-1 bg-gray-700">
+                <div className="relative w-full h-6 md:h-8 rounded-lg overflow-hidden mt-1 mb-1 bg-gray-700">
                     <div
-                        className="h-full bg-green-600 dark:bg-green-700  rounded-lg transition-all duration-300"
+                        className="h-full bg-green-600 dark:bg-green-700 rounded-lg transition-all duration-300 "
                         style={{ width: `${progressValue}%` }}
                     ></div>
                 </div>
 
-                <p className="text-sm mt-1 dark:text-[#d0d0d0]">{`Saved: $${saved} / Goal: $${goal}`}</p>
+                <p className="text-sm md:text-lg mt-1 dark:text-[#d0d0d0]">{`Saved: $${saved} / Goal: $${goal}`}</p>
 
                 <form onSubmit={handleAddMoneySubmit} className="my-2">
-                    <label className='text-sm dark:text-[#d0d0d0]'>Add money:</label>
+                    <label className='text-sm md:text-lg dark:text-[#d0d0d0]'>Add money:</label>
                     <div className="flex gap-2">
                         <input 
                             type="number"
-                            className="border border-gray-300 text-sm rounded-md p-1 w-2/3 dark:text-[#d0d0d0]"
+                            className="border border-gray-300 text-sm md:text-xl rounded-md p-1 w-2/3 md:py-3 dark:text-[#d0d0d0] focus:border-blue-500  focus:outline-none focus:ring-0"
                             value={addAmount}
                             onChange={(e) => setAddAmount(e.target.value)}
                             required
                         />
-                        <button type="submit" className="bg-green-600 dark:bg-green-800 hover:bg-green-700 hover:dark:bg-green-900 text-sm text-white px-3 py-1 rounded-md  transition">Add</button>
+                        <button type="submit" className="bg-green-600 dark:bg-green-800 hover:bg-green-700 hover:dark:bg-green-900 text-sm md:text-xl text-white px-3 md:w-1/6 py-1 rounded-md  transition">Add</button>
                     </div>
                 </form>
 
                 <form onSubmit={handleRemoveMoneySubmit}>
-                    <label className="text-sm dark:text-[#d0d0d0]">Remove money:</label>
+                    <label className="text-sm md:text-lg dark:text-[#d0d0d0]">Remove money:</label>
                     <div className="flex gap-2">
                         <input 
                             type="number"
-                            className="border border-gray-300 text-sm rounded-md p-1 w-2/3 dark:text-[#d0d0d0]"
+                            className="border border-gray-300 text-sm md:text-xl rounded-md p-1 w-2/3 md:py-3 dark:text-[#d0d0d0] focus:border-blue-500  focus:outline-none focus:ring-0"
                             value={removeAmount}
                             onChange={(e) => setRemoveAmount(e.target.value)}
                             required
                         />
-                        <button type="submit" className="bg-red-500 dark:bg-red-800 text-sm text-white px-3 py-1 rounded-md hover:bg-red-600 hover:dark:bg-red-900 transition">Remove</button>
+                        <button type="submit" className="bg-red-500 dark:bg-red-800 text-sm md:text-xl text-white px-3 md:w-1/6 py-1 rounded-md hover:bg-red-600 hover:dark:bg-red-900 ">Remove</button>
                     </div>
                 </form>
             </div>
