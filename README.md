@@ -4,6 +4,8 @@ This is my pet-project to show my skills in Tailwind, CSS, JS, React.js, Node.js
 
 ## Setup
 
+Before anything, type in the console `npm i` to install dependencies
+
 ### Tokens
 
 Go to a directory with module 'CommonJS' and type in the console twice: \
