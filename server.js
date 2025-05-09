@@ -33,7 +33,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Serve static files
-app.use('/', express.static(path.join(__dirname, '/public')));
+app.use('/', express.static(path.join(__dirname, '/dist')));
 
 // Public Routes (No JWT Required)
 app.use('/', require('./backend/routes/root'));
@@ -54,6 +54,10 @@ app.use('/progressBars', require('./backend/routes/progressBarsAll'));
 app.use((req, res, next) => {
   console.log(`❓ Unmatched route: ${req.method} ${req.originalUrl}`);
   next();
+});
+
+app.get('*splat', (req, res) => {
+  res.sendFile(path.join(__dirname, '../dist', 'index.html'));
 });
 
 // Error handler

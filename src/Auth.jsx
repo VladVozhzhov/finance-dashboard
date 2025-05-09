@@ -36,8 +36,6 @@ const Auth = () => {
         },
       });
       
-      console.log("API Response Data:", response.data);
-      
       const { accessToken, userId } = response.data;
       
       // Validate
